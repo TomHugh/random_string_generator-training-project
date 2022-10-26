@@ -53,7 +53,7 @@ public class AppController {
 
         String msg = jobValidator.isValid(charset, min, max, quantity);
         if(msg == null) {
-            Job job = jobService.create(charset, min, max, quantity);
+            Job job = jobService.create(new Job(charset, min, max, quantity));
             resultService.processJob(job);
             return new ResponseEntity("Job created and is processed", HttpStatus.CREATED);
         } else {

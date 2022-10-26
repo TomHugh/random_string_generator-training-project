@@ -25,8 +25,8 @@ public class JobService {
         return jobRepository.findById(id);
     }
 
-    public Job create(String charset, int min, int max, int quantity) {
-        return jobRepository.save(new Job(charset, min, max, quantity));
+    public Job create(Job job) {
+        return jobRepository.save(job);
     }
 
 }

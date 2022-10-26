@@ -84,7 +84,6 @@ public class AppControllerTest {
 
     @Test
     public void testCreateJob() throws Exception {
-
         mockMvc.perform(post("/jobs?charset=asdf&min=2&max=4&quantity=10"))
                 .andExpect(status().isCreated())
                 .andDo(print());
@@ -92,7 +91,6 @@ public class AppControllerTest {
 
     @Test
     public void testGetResults() throws Exception {
-
         mockMvc.perform(get("/results"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/zip"));

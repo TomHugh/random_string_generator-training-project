@@ -19,7 +19,7 @@ public class StringGenerator {
 
     public String generate(String charset, int minLength, int maxLength) {
         int length = getRandomInt(maxLength-minLength+1) + minLength;
-        if(length == 1) return "";
+        if(length == 1) return String.valueOf(getRandomCharFromString(charset));
         StringBuffer stringBuffer = new StringBuffer(length);
         for(int i=0; i<length; i++) {
             stringBuffer.append(getRandomCharFromString(charset));

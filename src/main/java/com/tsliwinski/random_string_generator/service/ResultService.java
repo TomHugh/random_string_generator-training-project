@@ -27,7 +27,7 @@ public class ResultService {
         Set<String> stringSet = stringGenerator.generateSet(job.getCharset(), job.getMin(), job.getMax(), job.getQuantity());
         String filename = "result_of_job_" + job.getId();
         resultFiles.write(stringSet, filename);
-        Result result = new Result();
+        Result result = Result.createNew();
         job.setResult(result);
         result.setFilename(filename);
         create(result);

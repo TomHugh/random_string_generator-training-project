@@ -23,8 +23,8 @@ public class JobValidator {
     }
 
     public String minMax(int min, int max) {
-        if(min > 0) return min <= max ? null : "Max can't be less than min";
-        return null;
+        if(min <= 0) return "Min can't be zero or less";
+        else return min <= max ? null : "Max can't be less than min";
     }
 
     public String quantity(String charset, int min, int max, int quantity) {

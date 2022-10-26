@@ -20,6 +20,8 @@ public class Result {
     private long id;
     @Column(name = "FILENAME", nullable = false)
     private String filename;
-//    @OneToOne(mappedBy = "result", fetch = FetchType.LAZY)
-//    private Job job;
+
+    public static Result createNew() {
+        return new Result();
+    }
 }
