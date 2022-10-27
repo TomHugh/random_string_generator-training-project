@@ -1,3 +1,6 @@
+-- liquibase formatted sql
+-- changeset tsliwinski:1
+
 CREATE TABLE RESULT (
     ID BIGINT AUTO_INCREMENT PRIMARY KEY,
     FILENAME VARCHAR(32)

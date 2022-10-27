@@ -4,6 +4,7 @@ import com.tsliwinski.random_string_generator.entity.Job;
 import com.tsliwinski.random_string_generator.service.JobService;
 import com.tsliwinski.random_string_generator.service.ResultService;
 import com.tsliwinski.random_string_generator.service.utility.JobValidator;
+import com.tsliwinski.random_string_generator.service.utility.ResultFiles;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +29,7 @@ public class AppController {
     private final JobService jobService;
     private final JobValidator jobValidator;
     private final ResultService resultService;
+    private final ResultFiles resultFiles;
 
     @GetMapping("/jobs")
     public List<Job> getJobs() {
@@ -69,30 +71,7 @@ public class AppController {
                 "Content-Disposition",
                 "attachment;filename=results.zip");
 
-        StreamingResponseBody stream = out -> {
-
-            final File directory = new File("results");
-            final ZipOutputStream zipOut = new ZipOutputStream(response.getOutputStream());
-
-            if(directory.exists() && directory.isDirectory()) {
-                try {
-                    for (final File file : directory.listFiles()) {
-                        final InputStream inputStream=new FileInputStream(file);
-                        final ZipEntry zipEntry=new ZipEntry(file.getName());
-                        zipOut.putNextEntry(zipEntry);
-                        byte[] bytes=new byte[1024];
-                        int length;
-                        while ((length=inputStream.read(bytes)) >= 0) {
-                            zipOut.write(bytes, 0, length);
-                        }
-                        inputStream.close();
-                    }
-                    zipOut.close();
-                } catch (final IOException e) {
-                    response.setStatus(500);
-                }
-            }
-        };
+        StreamingResponseBody stream = resultFiles.downloadResultsZip(response);
         return new ResponseEntity(stream, HttpStatus.OK);
     }
 
@@ -106,28 +85,7 @@ public class AppController {
                 "Content-Disposition",
                 "attachment;filename=" + resultName + ".zip");
 
-        StreamingResponseBody stream = out -> {
-
-            final File file = new File("results/" + resultName + ".txt");
-            final ZipOutputStream zipOut = new ZipOutputStream(response.getOutputStream());
-
-            if(file.exists()) {
-                try {
-                    final InputStream inputStream=new FileInputStream(file);
-                    final ZipEntry zipEntry=new ZipEntry(resultName);
-                    zipOut.putNextEntry(zipEntry);
-                    byte[] bytes=new byte[1024];
-                    int length;
-                    while ((length=inputStream.read(bytes)) >= 0) {
-                        zipOut.write(bytes, 0, length);
-                    }
-                    inputStream.close();
-                    zipOut.close();
-                } catch (final IOException e) {
-                    response.setStatus(500);
-                }
-            }
-        };
+        StreamingResponseBody stream = resultFiles.downloadFileZip(response, resultName + ".txt");
         return new ResponseEntity(stream, HttpStatus.OK);
     }
 }
